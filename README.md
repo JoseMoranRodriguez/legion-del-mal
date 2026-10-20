@@ -1,3 +1,15 @@
+![Estático](https://img.shields.io/badge/Legion--del--Mal-Ultima--Version-blue)
+
+
+![Con logo](https://img.shields.io/badge/Git-2.45-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+
+![Workflow](https://img.shields.io/github/actions/workflow/status/JoseMoranRodriguez/legion-del-mal/ci.yml)
+![Release](https://img.shields.io/github/v/release/JoseMoranRodriguez/legion-del-mal)
+![Issues](https://img.shields.io/github/issues/JoseMoranRodriguez/legion-del-mal)
+![Último commit](https://img.shields.io/github/last-commit/JoseMoranRodriguez/legion-del-mal)
+![Licencia](https://img.shields.io/github/license/JoseMoranRodriguez/legion-del-mal)
+
 # 🦹‍♂️ La Legión del Mal
 
 > _"El mundo no se conquista con fuerza bruta, se conquista con un buen plan y control de versiones."_
