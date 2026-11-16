@@ -1,0 +1,30 @@
+
+name: Comunicador de la Legion
+
+on:
+  workflow_dispatch:
+    inputs:
+      villano:
+        description: "Que villano envia el mensaje?"
+        required: true
+        type: choice
+        options:
+          - "Lex Luthor"
+          - "Brainiac"
+          - "Darkseid"
+          - "Sinestro"
+          - "Cheetah"
+          - "Black Manta"
+          - "Deathstroke"
+          - "Bizarro"
+          - "Gorilla Grodd"
+          - "Captain Cold"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  transmitir-mensaje:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
