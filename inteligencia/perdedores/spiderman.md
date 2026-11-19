@@ -17,3 +17,6 @@ Spiderman es afcafaef
 - Spiderman 1
 - Spiderman 2
 - Spiderman 3
+
+## Estrategia recomendada.
+sadgsagfsddddddddgdgdsasfsgsgsgs
