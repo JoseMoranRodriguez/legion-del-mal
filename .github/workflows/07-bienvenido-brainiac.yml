@@ -1,0 +1,33 @@
+# ╔══════════════════════════════════════════════════════╗
+# ║        BIENVENIDA AUTOMÁTICA DE BRAINIAC             ║
+# ║                                                      ║
+# ║  Cada vez que alguien abre un issue, Brainiac        ║
+# ║  responde de inmediato con un comentario avisando    ║
+# ║  que el issue está siendo revisado.                  ║
+# ╚══════════════════════════════════════════════════════╝
+
+name: 🤖 Bienvenida de Brainiac - Nuevo issue
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  responder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Brainiac responde al issue
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            const autor = context.payload.issue.user.login;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🤖 ¡Saludos, @${autor}!\n\n` +
+                    `Tu issue ha sido recibido y **está siendo revisado por Brainiac** 🧠.\n` +
+                    `La Legión del Mal te responderá en cuanto el análisis haya concluido.`
+            });
