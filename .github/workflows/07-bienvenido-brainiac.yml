@@ -8,8 +8,11 @@
 
 name: 🤖 Bienvenida de Brainiac - Nuevo issue
 on:
-  issues:
-    types: [opened]
+  #issues:
+   # types: [opened]
+
+   ## remover esto cuando lo tengan listo para prod.
+   workflow_dispatch:
 
 permissions:
   issues: write
@@ -31,3 +34,23 @@ jobs:
                     `Tu issue ha sido recibido y **está siendo revisado por Brainiac** 🧠.\n` +
                     `La Legión del Mal te responderá en cuanto el análisis haya concluido.`
             });
+
+      - name: Brainiac envía aviso por correo electrónico
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Brainiac <${{ secrets.MAIL_USERNAME }}>
+          to: fernando@google.com
+          subject: "🧠 Nuevo issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          body: |
+            Brainiac ha detectado un nuevo issue en ${{ github.repository }}.
+
+            Título: ${{ github.event.issue.title }}
+            Autor: ${{ github.event.issue.user.login }}
+            Enlace: ${{ github.event.issue.html_url }}
+
+            El issue está siendo revisado por Brainiac.
