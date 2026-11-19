@@ -9,3 +9,8 @@ Estos sonsadasfdafdsafa
 3. sfdgwregewrgre
 4. segfwerger
 5. gegeg
+
+## Plan de escape
+
+- ahsdhasdfhdjashfash
+- sahdhasdhasd

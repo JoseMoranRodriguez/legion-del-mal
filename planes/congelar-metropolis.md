@@ -9,3 +9,8 @@ El objetivo es fajdfdafjdajfdjafd
 4. fewgwewg
 5. rwgewrgrewg
 6. wrgeewtgrwetwer
+
+## Plan de escape
+
+- en caso  asjadja
+- dajsfjasjdfas
