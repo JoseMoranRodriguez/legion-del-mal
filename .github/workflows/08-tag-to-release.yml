@@ -1,0 +1,84 @@
+# ╔══════════════════════════════════════════════════════╗
+# ║          DEL TAG AL RELEASE - AUTOMÁTICO             ║
+# ║                                                      ║
+# ║  Cada vez que se sube un tag nuevo, se crea un       ║
+# ║  Release en GitHub con:                              ║
+# ║   - Los commits (log) desde el tag anterior          ║
+# ║   - Los archivos que cambiaron en esa versión        ║
+# ╚══════════════════════════════════════════════════════╝
+
+name: 🏷️ Del tag al release
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio con todo el historial
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # necesario para ver todos los commits y tags
+
+      - name: Generar notas del release
+        env:
+          TAG: ${{ github.ref_name }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          # Buscar el tag anterior (si existe)
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${TAG}^" 2>/dev/null || echo "")
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            RANGE="${PREVIOUS_TAG}..${TAG}"
+            echo "📌 Comparando $PREVIOUS_TAG → $TAG"
+          else
+            RANGE="$TAG"
+            echo "📌 Primer tag del repositorio, se incluye todo el historial"
+          fi
+
+          {
+            echo "# 🚀 Versión $TAG"
+            echo ""
+            if [ -n "$PREVIOUS_TAG" ]; then
+              echo "Cambios desde **$PREVIOUS_TAG** hasta **$TAG**."
+            else
+              echo "Primera versión publicada."
+            fi
+            echo ""
+            echo "## 📝 Commits"
+            echo ""
+            git log "$RANGE" --no-merges --pretty=format:"- %s (\`%h\`) — %an, %ad" --date=short
+            echo ""
+            echo ""
+            echo "## 📂 Archivos modificados"
+            echo ""
+            echo '```'
+            if [ -n "$PREVIOUS_TAG" ]; then
+              git diff --stat "$PREVIOUS_TAG" "$TAG"
+            else
+              git show --stat --pretty=format:"" "$TAG"
+            fi
+            echo '```'
+            echo ""
+            if [ -n "$PREVIOUS_TAG" ]; then
+              echo "**Comparación completa:** ${REPO_URL}/compare/${PREVIOUS_TAG}...${TAG}"
+            fi
+          } > release-notes.md
+
+          echo "----- Notas generadas -----"
+          cat release-notes.md
+
+      - name: Crear el release en GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" \
+            --title "Versión $TAG" \
+            --notes-file release-notes.md \
+            --verify-tag
